@@ -1,18 +1,36 @@
+import csv
+
+### Función para almacenar los productos en un archivo csv
+def save_products():
+    with open('productos.csv', mode='w', newline='', encoding='utf-8') as archivo_csv:
+        escritor_csv = csv.writer(archivo_csv)
+    
+        # Opcional: Escribir la cabecera del CSV
+        escritor_csv.writerow(["ID", "Producto", "Precio"])
+    
+        # Escribir cada fila de products en el archivo CSV
+        escritor_csv.writerows(products)
+    print("El archivo 'productos.csv' ha sido guardado correctamente.")
+### Función para leer los archivos desde un archivo csv
+def read_products():
+    products = []
+    with open('productos.csv', mode='r', newline='', encoding='utf-8') as archivo_csv:
+        lector_csv = csv.reader(archivo_csv)
+    
+        # Saltar la cabecera si existe
+        next(lector_csv)
+    
+        # Añadir cada fila al array products
+        for fila in lector_csv:
+            # Convertir los tipos de datos (ID a int y Precio a float)
+            products.append([int(fila[0]), fila[1], float(fila[2])])
+    return products
+
+
 budget = []                                         ### Array donde se almacenan los prespuestos
 client_list = [["41418471","Brian Barquesi", ""]]   ### Array de clientes
-products = [                                        ### Array de productos
-    [1, "Filtro de aceite", 15.99],
-    [2, "Batería de coche", 120.50],
-    [3, "Neumático radial", 75.30],
-    [4, "Bujía", 5.25],
-    [5, "Freno de disco", 45.00],
-    [6, "Amortiguador", 89.99],
-    [7, "Aceite de motor", 32.49],
-    [8, "Filtro de aire", 12.75],
-    [9, "Pastilla de freno", 23.99],
-    [10, "Correa de distribución", 65.80]
-]   
-
+products = read_products()
+#save_products()
 ##  Funciones del cliente ###
 def add_client():
     client_name = input("Ingrese el nombre del nuevo cliente: ")
@@ -67,7 +85,7 @@ def main():
         print("1: Crear presupuesto")
         print("2: Ver productos")
         print("3: Ver presupuestos")
-        action = input("Qué desea hacer? X para salir:").upper()
+        action = input("Qué desea hacer? X para salir: ").upper()
         if action == "1":
             create_budget()
         elif action == "2":
